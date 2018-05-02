@@ -1,0 +1,10 @@
+[package]
+name = "wssh"
+version = "0.0.1"
+authors = ["Stanislav <stanislavlapata@gmail.com>"]
+
+[dependencies]
+regex = "0.2.10"
+clap = "2.31.2"
+rusoto_core = "0.32.0"
+rusoto_opsworks = "0.32.0"

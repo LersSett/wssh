@@ -1,0 +1,25 @@
+tab_spaces = 2
+max_width = 120
+
+
+# Unstable fearures
+unstable_features = true
+comment_width = 120
+control_brace_style = "AlwaysSameLine"
+combine_control_expr = false
+
+where_single_line = true
+brace_style = "PreferSameLine"
+fn_single_line = true
+imports_indent = "Block"
+merge_imports = true
+match_block_trailing_comma = true
+force_multiline_blocks = true
+normalize_comments = true
+reorder_impl_items = true
+struct_field_align_threshold= 50
+trailing_comma = "Never"
+trailing_semicolon = false
+use_try_shorthand = true
+wrap_comments = true
+match_arm_blocks = false

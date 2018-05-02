@@ -1,0 +1,46 @@
+#compdef wssh
+
+_stack_names() {
+  cat $HOME/.wssh | sort -u -t" " -k1,1 | awk -F" " '{print $1}'
+}
+
+
+_instance_names() {
+  cat $HOME/.wssh | grep "^$1\ "  | sort -u -t" " -k3,3 | awk -F" " '{print $3}'
+}
+
+
+build_flags=(
+  --force'[Update stacks information]'
+  {-h,--help}'[Prints help information]'
+)
+
+_wssh() {
+  stack_names=($(_stack_names))
+
+  _arguments ${build_flags[@]} \
+    "1: :{_describe 'stask' stack_names}" \
+    '*:: :->args'
+
+    case $state in
+    args)
+      instance_names=($(_instance_names $words[1]))
+
+      _arguments ${build_flags[@]} \
+        "1: :{_describe 'instance' instance_names}"
+      ;;
+    esac
+}
+
+if [ ! -f $HOME/.wssh ]; then
+  wssh --force
+  if [[ $? == 0 ]] then
+    _wssh
+  else
+    echo ":("
+  fi
+else
+  _wssh
+fi
+
+
