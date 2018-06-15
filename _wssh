@@ -11,7 +11,10 @@ _instance_names() {
 
 
 build_flags=(
-  --force'[Update stacks information]'
+  {-k,--key}'[Path to SSH key]'
+  {-u,--user}'[SSH user]'
+  {-p,--port}'[SSH port]'
+  {-f,--force}'[Update stacks information]'
   {-h,--help}'[Prints help information]'
 )
 
@@ -19,7 +22,7 @@ _wssh() {
   stack_names=($(_stack_names))
 
   _arguments ${build_flags[@]} \
-    "1: :{_describe 'stask' stack_names}" \
+    "1:'[STACK_NAME]':{_describe 'stask' stack_names}" \
     '*:: :->args'
 
     case $state in

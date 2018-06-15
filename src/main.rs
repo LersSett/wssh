@@ -17,10 +17,13 @@ use update::StackData;
 
 fn main() {
   let matches = cli::args();
+  let port: &str;
 
   if matches.is_present("force") {
     update::stacks_data()
   }
+
+  port = matches.value_of("port").unwrap_or("22");
 
   let data = parse_file();
   match matches.value_of("STACK_NAME") {
@@ -36,7 +39,7 @@ fn main() {
             .unwrap();
           let user = matches.value_of("user").unwrap_or("ubuntu");
           let key_path = matches
-            .value_of("key_path")
+            .value_of("key")
             .unwrap_or(
               helper::home_dir()
                 .join(".ssh")
@@ -47,15 +50,21 @@ fn main() {
             .to_string();
 
           let proxy_command = format!(
-            "-o ProxyCommand=\"ssh -i {key_path} -W %h:%p {user}@{elastic_ip}\"",
+            "ProxyCommand=ssh -i {key_path} -p {port} -W %h:%p {user}@{elastic_ip}",
             key_path = key_path,
             user = user,
-            elastic_ip = stack_data.clone().endpoint.elastic_ip.unwrap()
+            elastic_ip = stack_data.clone().endpoint.elastic_ip.unwrap(),
+            port = port
           );
 
           let result = Command::new("ssh")
+            .arg("-o")
             .arg(proxy_command)
-            .arg(format!("-i {}", key_path))
+            .arg("-i")
+            .arg(key_path)
+            .arg("-vvv")
+            .arg("-p")
+            .arg(port)
             .arg(format!("{user}@{hostname}", user = user, hostname = instance.hostname))
             .spawn();
 
