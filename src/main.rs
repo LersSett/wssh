@@ -46,8 +46,7 @@ fn main() {
                 .join(format!("{}.pem", instance.ssh_key_name.clone()))
                 .to_str()
                 .unwrap()
-            )
-            .to_string();
+            ).to_string();
 
           let proxy_command = format!(
             "ProxyCommand=ssh -i {key_path} -p {port} -W %h:%p {user}@{elastic_ip}",
@@ -62,7 +61,6 @@ fn main() {
             .arg(proxy_command)
             .arg("-i")
             .arg(key_path)
-            .arg("-vvv")
             .arg("-p")
             .arg(port)
             .arg(format!("{user}@{hostname}", user = user, hostname = instance.hostname))
